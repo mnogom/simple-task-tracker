@@ -10,4 +10,4 @@ class Item(Base):
     description = Column(String)
     owner_id = Column(Integer, ForeignKey('user.id'))
 
-    owner = relationship('User', back_populate='items')
+    owner = relationship('User', back_populates='items')

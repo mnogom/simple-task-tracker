@@ -1,3 +1,5 @@
+# https://docs.sqlalchemy.org/en/14/orm/mapping_api.html#sqlalchemy.orm.as_declarative
+
 from typing import Any
 
 from sqlalchemy.ext.declarative import as_declarative, declared_attr
@@ -10,4 +12,4 @@ class Base:
 
     @declared_attr
     def __tablename__(cls) -> str:
-        return cls.__tablename__.lower()
+        return cls.__name__.lower()
