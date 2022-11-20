@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr
 
-from .item import Item
+from .task import Task
 
 
 class UserBase(BaseModel):
@@ -8,9 +8,6 @@ class UserBase(BaseModel):
     full_name: str | None = None
     is_active: bool | None = True
     is_superuser: bool = False
-
-    class Config:
-        orm_mode = True
 
 
 class UserCreate(UserBase):
@@ -28,7 +25,7 @@ class UserUpdate(UserBase):
 class User(UserBase):
     id: int
     is_active: bool
-    items: list[Item] = []
+    tasks: list[Task] = []
 
     class Config:
         orm_mode = True

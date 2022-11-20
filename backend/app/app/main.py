@@ -3,10 +3,11 @@ from typing import Generator
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 
-from app import crud, schemas, models
+from app import crud, schemas
+from app.db.base_class import Base
 from app.db.session import SessionLocal, engine
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -58,26 +59,26 @@ def update_user(user_id: int,
     return db_user
 
 
-@app.post('/users/{user_id}/items/', response_model=schemas.Item)
-def create_item(user_id: int,
-                item: schemas.ItemCreate,
+@app.post('/users/{user_id}/tasks/', response_model=schemas.Task)
+def create_task(user_id: int,
+                task: schemas.TaskCreate,
                 db: Session = Depends(get_db)):
-    db_item = crud.create_user_item(db=db, item=item, user_id=user_id)
-    if db_item is None:
-        raise HTTPException(status_code=400, detail='Item was not created')
-    return db_item
+    db_task = crud.create_user_task(db=db, task=task, user_id=user_id)
+    if db_task is None:
+        raise HTTPException(status_code=400, detail='task was not created')
+    return db_task
 
 
-@app.get('/users/{user_id}/items/', response_model=list[schemas.Item])
-def get_items_by_user(user_id: int,
+@app.get('/users/{user_id}/tasks/', response_model=list[schemas.Task])
+def get_tasks_by_user(user_id: int,
                       skip: int = 0,
                       limit: int = 100,
                       db: Session = Depends(get_db)):
-    db_items = crud.get_user_items(db=db, user_id=user_id, skip=skip, limit=limit)
-    return db_items
+    db_tasks = crud.get_user_tasks(db=db, user_id=user_id, skip=skip, limit=limit)
+    return db_tasks
 
 
-@app.get('/items/', response_model=list[schemas.Item])
-def get_items(db: Session = Depends(get_db)):
-    db_items = crud.get_items(db=db, skip=0, limit=10)
-    return db_items
+@app.get('/tasks/', response_model=list[schemas.Task])
+def get_tasks(db: Session = Depends(get_db)):
+    db_tasks = crud.get_tasks(db=db, skip=0, limit=10)
+    return db_tasks
