@@ -5,7 +5,7 @@ from .task import Task
 
 class UserBase(BaseModel):
     email: EmailStr | None = None
-    full_name: str | None = None
+    full_name: str
     is_active: bool | None = True
     is_superuser: bool = False
 
