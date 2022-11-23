@@ -37,7 +37,7 @@ target_metadata = Base.metadata
 
 
 def get_url():
-    return settings.db_url
+    return settings.DB_URL
 
 
 def run_migrations_offline() -> None:

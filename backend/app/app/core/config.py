@@ -7,9 +7,11 @@ dotenv.load_dotenv()
 
 
 class Settings(BaseSettings):
-    db_driver: str = os.getenv('SQL_DRIVER')
-    db_url: str = 'sqlite:///./sql_app.db' if db_driver == 'sqlite3' else ''
-    test_db_url: str = 'sqlite:///test_sql_app.db' if db_driver == 'sqlite3' else ''
+    PROJECT_NAME: str = 'Simple Task Tracker'
+    VERSION: str = '0.1.1'
+    DB_DRIVER: str = os.getenv('SQL_DRIVER')
+    DB_URL: str = 'sqlite:///./sql_app.db' if DB_DRIVER == 'sqlite3' else ''
+    TEST_DB_URL: str = 'sqlite:///test_sql_app.db' if DB_DRIVER == 'sqlite3' else ''
 
 
 settings = Settings()

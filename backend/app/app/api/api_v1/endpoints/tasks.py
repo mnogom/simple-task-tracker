@@ -1,0 +1,45 @@
+from typing import Any
+
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
+
+from app import crud, schemas
+from app.api import deps
+
+router = APIRouter()
+
+
+@router.get('/', response_model=list[schemas.Task])
+def read_tasks(db: Session = Depends(deps.get_db),
+               skip: int = 0,
+               limit: int = 100) -> Any:
+    db_tasks = crud.get_tasks(db=db, skip=skip, limit=limit)
+    return db_tasks
+
+
+@router.get('/{task_id}', response_model=schemas.Task)
+def get_task(task_id: int,
+             db: Session = Depends(deps.get_db)) -> Any:
+    db_task = crud.get_task(db=db, task_id=task_id)
+    if db_task is None:
+        return HTTPException(status_code=404, detail='Task not found')
+    return db_task
+
+
+@router.post('/', response_model=schemas.Task)
+def create_task(task: schemas.TaskCreate,
+                db: Session = Depends(deps.get_db)) -> Any:
+    db_task = crud.create_user_task(db=db, task=task, user_id=1)
+    if db_task is None:
+        raise HTTPException(status_code=400, detail='Task was not created')
+    return db_task
+
+
+@router.put('/{task_id}')
+def update_task(task_id: int) -> Any:
+    return {'message': f'update_task {task_id}'}
+
+
+@router.delete('/{task_id}')
+def delete_task(task_id: int) -> Any:
+    return {'message': f'delete_task {task_id}'}

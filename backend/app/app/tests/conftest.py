@@ -3,12 +3,13 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
 
-from app.db.base_class import Base
-from app.main import app, get_db
 from app.core.config import settings
+from app.main import app
+from app.db.base_class import Base
+from app.api.deps import get_db
 
 test_engine = create_engine(
-    settings.test_db_url,
+    settings.TEST_DB_URL,
     connect_args={'check_same_thread': False}
 )
 TestingSessionLocal = sessionmaker(
