@@ -13,6 +13,7 @@ sqlalchemy = "^1.4.44"
 pydantic = {extras = ["email"], version = "^1.10.2"}
 alembic = "^1.8.1"
 python-dotenv = "^0.21.0"
+python-jose = "^3.3.0"
 
 
 [tool.poetry.group.dev.dependencies]

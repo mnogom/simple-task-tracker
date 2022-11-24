@@ -5,7 +5,7 @@ from .task import Task
 
 class UserBase(BaseModel):
     email: EmailStr | None = None
-    full_name: str
+    full_name: str | None = None
     is_active: bool | None = True
     is_superuser: bool = False
 
@@ -17,9 +17,6 @@ class UserCreate(UserBase):
 
 class UserUpdate(UserBase):
     password: str | None
-
-    class Config:
-        orm_mode = True
 
 
 class User(UserBase):

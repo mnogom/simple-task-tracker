@@ -36,10 +36,15 @@ def create_user(user: schemas.UserCreate,
 
 
 @router.put('/{user_id}', response_model=schemas.User)
-def update_user(user_id: int):
-    return {'message': f'update_user {user_id}'}
+def update_user(user_id: int,
+                updated_data: schemas.UserUpdate,
+                db: Session = Depends(deps.get_db)) -> Any:
+    db_user = crud.update_user(db=db, user_id=user_id, updated_data=updated_data)
+    return db_user
 
 
 @router.delete('/{user_id}', response_model=schemas.User)
-def delete_user(user_id: int):
-    return {'message': f'delete_user {user_id}'}
+def delete_user(user_id: int,
+                db: Session = Depends(deps.get_db)) -> Any:
+    db_user = crud.remove_user(db=db, user_id=user_id)
+    return db_user

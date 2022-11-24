@@ -3,15 +3,15 @@ from sqlalchemy.orm import Session
 from app import models, schemas
 
 
-def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
+def get_user(db: Session, user_id: int) -> models.User:
+    return db.query(models.User).get(user_id)
 
 
-def get_user_by_email(db: Session, user_email: str):
+def get_user_by_email(db: Session, user_email: str) -> models.User:
     return db.query(models.User).filter(models.User.email == user_email).first()
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
+def get_users(db: Session, skip: int = 0, limit: int = 100) -> list[models.User]:
     return db.query(models.User).offset(skip).limit(limit).all()
 
 
@@ -31,5 +31,28 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
     return db_user
 
 
-def update_user(db: Session, user_id: int, user: schemas.UserUpdate):
-    pass
+def update_user(db: Session,
+                user_id: int,
+                updated_data: schemas.UserUpdate):
+    db_user = get_user(db=db, user_id=user_id)
+    user_data = updated_data.dict(exclude_none=True)
+
+    password = user_data.pop('password', None)
+    if password:
+        setattr(db_user, 'hashed_password', f'{password}-hash')
+
+    for key, value in user_data.items():
+        setattr(db_user, key, value)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+
+def remove_user(db: Session,
+                user_id: int) -> schemas.User:
+    db_user = get_user(db=db, user_id=user_id)
+    db.delete(db_user)
+    db.commit()
+    return db_user
+

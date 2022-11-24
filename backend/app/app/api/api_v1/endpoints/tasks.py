@@ -29,15 +29,17 @@ def get_task(task_id: int,
 @router.post('/', response_model=schemas.Task)
 def create_task(task: schemas.TaskCreate,
                 db: Session = Depends(deps.get_db)) -> Any:
-    db_task = crud.create_user_task(db=db, task=task, user_id=1)
+    db_task = crud.create_task(db=db, task=task, user_id=1)
     if db_task is None:
         raise HTTPException(status_code=400, detail='Task was not created')
     return db_task
 
 
-@router.put('/{task_id}')
-def update_task(task_id: int) -> Any:
-    return {'message': f'update_task {task_id}'}
+@router.put('/{task_id}', response_model=schemas.Task)
+def update_task(task_id: int,
+                task: schemas.TaskUpdate,
+                db: Session = Depends(deps.get_db)) -> Any:
+    db_task = crud
 
 
 @router.delete('/{task_id}')
