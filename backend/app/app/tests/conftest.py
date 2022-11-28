@@ -38,3 +38,11 @@ def client():
             yield client
         finally:
             Base.metadata.drop_all(bind=test_engine)
+
+
+@pytest.fixture(scope='function')
+def user():
+    return {
+        'full_name': 'John Doe',
+        'password': 'password',
+    }

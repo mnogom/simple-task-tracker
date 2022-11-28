@@ -3,5 +3,6 @@ from .crud_user import (
     update_user, remove_user
 )
 from .crud_task import (
-    get_tasks, get_user_tasks, create_task, get_task
+    get_tasks, get_user_tasks, create_task, get_task,
+    update_task, remove_task
 )
