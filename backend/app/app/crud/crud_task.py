@@ -43,9 +43,9 @@ def update_task(db: Session,
     task_data = updated_data.dict(exclude_none=True)
     for key, value in task_data.items():
         setattr(db_task, key, value)
-    db.add(task_data)
+    db.add(db_task)
     db.commit()
-    db.refresh(task_data)
+    db.refresh(db_task)
     return db_task
 
 

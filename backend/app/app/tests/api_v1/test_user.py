@@ -58,11 +58,11 @@ def test_remove_user(client):
 
 
 def test_404(client):
-    response = client.get('/users/1')
+    response = client.get('/users/1/')
     assert response.status_code == 404
 
     response = client.put('/users/1', json=USER_DATA)
     assert response.status_code == 404
 
-    response = client.delete('/users/1')
+    response = client.delete('/users/1/')
     assert response.status_code == 404

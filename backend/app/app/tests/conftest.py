@@ -40,9 +40,10 @@ def client():
             Base.metadata.drop_all(bind=test_engine)
 
 
-@pytest.fixture(scope='function')
-def user():
-    return {
-        'full_name': 'John Doe',
-        'password': 'password',
-    }
+@pytest.fixture(scope='module')
+def db():
+    db = TestingSessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
